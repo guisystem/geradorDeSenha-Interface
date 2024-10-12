@@ -24,6 +24,7 @@ public class SenhasView extends JFrame {
 	private JPanel contentPane;
 	private JButton btnMinhasSenhas;
 	private JButton btnNovaSenha;
+	private JPanel painel;
 	
 	/**
 	 * Launch the application.
@@ -124,6 +125,8 @@ public class SenhasView extends JFrame {
 		btnNovaSenha.setBounds(200, 96, 181, 48);
 		contentPane.add(btnNovaSenha);
 		
+		painel = new SenhasSalvasPanel();
+		contentPane.add(painel);
 	}
 
 	private void mudarEstiloDoBotaoCorrespondente(JButton botaoSelecionado, JButton botaoNaoSelecionado) {
