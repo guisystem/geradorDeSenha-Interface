@@ -88,7 +88,13 @@ public class SenhasView extends JFrame {
 		btnMinhasSenhas = new JButton("Minhas Senhas");
 		btnMinhasSenhas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				contentPane.remove(painel);
+		        
+		        painel = new SenhasSalvasPanel();
+		        contentPane.add(painel);
+		        
+		        contentPane.revalidate();
+		        contentPane.repaint();
 			}
 		});
 		btnMinhasSenhas.addActionListener(new ActionListener() {
@@ -108,7 +114,13 @@ public class SenhasView extends JFrame {
 		btnNovaSenha = new JButton("Nova Senha");
 		btnNovaSenha.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				contentPane.remove(painel);
 		        
+		        painel = new GerarSenhaPanel();
+		        contentPane.add(painel);
+		        
+		        contentPane.revalidate();
+		        contentPane.repaint();
 			}
 		});
 		btnNovaSenha.addActionListener(new ActionListener() {
