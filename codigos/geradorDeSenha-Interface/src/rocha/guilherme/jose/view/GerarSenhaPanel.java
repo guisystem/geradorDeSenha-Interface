@@ -121,7 +121,7 @@ public class GerarSenhaPanel extends JPanel {
 		lblPalavraPessoal.setBounds(12, 456, 302, 28);
 		this.add(lblPalavraPessoal);
 		
-		rdbtnSoMaiusculas = new JRadioButton();
+		rdbtnSoMaiusculas = new JRadioButtonPersonalizado(Color.decode("#373B44"), Color.decode("#4286f4"));
 		rdbtnSoMaiusculas.setText("Só Maiúsculas");
 		rdbtnSoMaiusculas.setForeground(new Color(255, 255, 255));
 		rdbtnSoMaiusculas.setOpaque(false);
@@ -129,7 +129,7 @@ public class GerarSenhaPanel extends JPanel {
 		rdbtnSoMaiusculas.setBounds(12, 248, 180, 24);
 		this.add(rdbtnSoMaiusculas);
 		
-		rdbtnSoMinusculas = new JRadioButton();
+		rdbtnSoMinusculas = new JRadioButtonPersonalizado(Color.decode("#373B44"), Color.decode("#4286f4"));
 		rdbtnSoMinusculas.setText("Só Minúsculas");
 		rdbtnSoMinusculas.setForeground(new Color(255, 255, 255));
 		rdbtnSoMinusculas.setOpaque(false);
@@ -137,7 +137,7 @@ public class GerarSenhaPanel extends JPanel {
 		rdbtnSoMinusculas.setBounds(12, 284, 180, 24);
 		this.add(rdbtnSoMinusculas);
 		
-		rdbtnMaiusculasEMinusculas = new JRadioButton();
+		rdbtnMaiusculasEMinusculas = new JRadioButtonPersonalizado(Color.decode("#373B44"), Color.decode("#4286f4"));
 		rdbtnMaiusculasEMinusculas.setText("Maiúsculas e Minúsculas");
 		rdbtnMaiusculasEMinusculas.setSelected(true);
 		rdbtnMaiusculasEMinusculas.setForeground(new Color(255, 255, 255));
@@ -146,7 +146,7 @@ public class GerarSenhaPanel extends JPanel {
 		rdbtnMaiusculasEMinusculas.setBounds(12, 320, 254, 24);
 		this.add(rdbtnMaiusculasEMinusculas);
 		
-		rdbtnPalavraNao = new JRadioButton();
+		rdbtnPalavraNao = new JRadioButtonPersonalizado(Color.decode("#373B44"), Color.decode("#4286f4"));
 		rdbtnPalavraNao.setText("Não");
 		rdbtnPalavraNao.setForeground(new Color(255, 255, 255));
 		rdbtnPalavraNao.setOpaque(false);
@@ -155,7 +155,7 @@ public class GerarSenhaPanel extends JPanel {
 		rdbtnPalavraNao.setBounds(12, 490, 63, 24);
 		this.add(rdbtnPalavraNao);
 		
-		rdbtnPalavraSim = new JRadioButton();
+		rdbtnPalavraSim = new JRadioButtonPersonalizado(Color.decode("#373B44"), Color.decode("#4286f4"));
 		rdbtnPalavraSim.setText("Sim");
 		rdbtnPalavraSim.setForeground(new Color(255, 255, 255));
 		rdbtnPalavraSim.setOpaque(false);
