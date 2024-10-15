@@ -17,10 +17,13 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import rocha.guilherme.jose.model.SenhaTableModel;
+
 @SuppressWarnings("serial")
 public class SenhasSalvasPanel extends JPanel {
 
 	private JTable tableSenhas;
+	private SenhaTableModel tableModel = new SenhaTableModel();
 	
 	/**
 	 * Create the panel.
@@ -67,6 +70,7 @@ public class SenhasSalvasPanel extends JPanel {
 		tableSenhas.getColumnModel().getColumn(0).setPreferredWidth(150);
 		tableSenhas.getColumnModel().getColumn(1).setPreferredWidth(150);
 		scrollPane.setViewportView(tableSenhas);
+		tableSenhas.setModel(tableModel);
 		
 		JButton btnExcluirSenha = new JButtonPersonalizado(Color.decode("#1E3663"), Color.decode("#133E8C"), 10, 10);
 		btnExcluirSenha.addActionListener(new ActionListener() {
