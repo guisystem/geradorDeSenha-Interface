@@ -18,6 +18,9 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import rocha.guilherme.jose.controller.LoginController;
+import rocha.guilherme.jose.model.dao.BancoDeDados;
+
 @SuppressWarnings("serial")
 public class LoginView extends JFrame {
 
@@ -26,6 +29,8 @@ public class LoginView extends JFrame {
 	private JPasswordField passwordFieldSenha;
 	private JButton btnEntrar;
 	private JButton btnSeCadastrar;
+	
+	private LoginController controller;
 	
 	/**
 	 * Launch the application.
@@ -51,6 +56,8 @@ public class LoginView extends JFrame {
 	public LoginView() {
 		setUndecorated(true);
 		
+		controller = new LoginController(this);
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 393, 852);
 		contentPane = new JPanelPersonalizado(0, 0, Color.decode("#373B44"), Color.decode("#4286f4"), true);
@@ -63,7 +70,7 @@ public class LoginView extends JFrame {
 		lblNewLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+				controller.fecharAplicacao();
 			}
 		});
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -100,7 +107,7 @@ public class LoginView extends JFrame {
 		lblEsqueceuSenha.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+				controller.irParaTelaRedefinirSenha();
 			}
 		});
 		lblEsqueceuSenha.setForeground(new Color(255, 255, 255));
@@ -126,7 +133,7 @@ public class LoginView extends JFrame {
 		btnEntrar = new JButtonPersonalizado(Color.decode("#3F66D0"), Color.decode("#3F66D0"), 50, 50);
 		btnEntrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				controller.entrarNoAplicativo();
 			}
 		});
 		btnEntrar.addMouseListener(new MouseAdapter() {
@@ -148,7 +155,7 @@ public class LoginView extends JFrame {
 		btnSeCadastrar = new JButtonPersonalizado(Color.decode("#2193b0"), Color.decode("#4286f4"), 50, 50);
 		btnSeCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				controller.irParaTelaCadastro();
 			}
 		});
 		btnSeCadastrar.addMouseListener(new MouseAdapter() {
@@ -175,6 +182,9 @@ public class LoginView extends JFrame {
 		passwordFieldSenha.setBounds(28, 186, 297, 52);
 		painelCadastro.add(passwordFieldSenha);
 		
+		if(BancoDeDados.usuarios == null){
+			BancoDeDados.inicia();
+		}
 	}
 	
 	private void efeitoMouseOver(JButton botao) {
