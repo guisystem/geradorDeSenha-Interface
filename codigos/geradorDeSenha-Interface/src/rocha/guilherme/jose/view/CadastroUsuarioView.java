@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import rocha.guilherme.jose.controller.CadastroUsuarioController;
+
 @SuppressWarnings("serial")
 public class CadastroUsuarioView extends JFrame {
 
@@ -24,6 +26,8 @@ public class CadastroUsuarioView extends JFrame {
 	private JTextFieldPersonalizado textFieldEmail;
 	private JButtonPersonalizado btnContinuar;
 	private JButtonPersonalizado btnVoltarLogin;
+	
+	private CadastroUsuarioController controller;
 	
 	/**
 	 * Launch the application.
@@ -48,6 +52,8 @@ public class CadastroUsuarioView extends JFrame {
 	 */
 	public CadastroUsuarioView() {
 		setUndecorated(true);
+		
+		controller = new CadastroUsuarioController(this);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 393, 852);
@@ -139,7 +145,7 @@ public class CadastroUsuarioView extends JFrame {
 		btnContinuar = new JButtonPersonalizado(Color.decode("#3F66D0"), Color.decode("#3F66D0"), 50, 50);
 		btnContinuar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				controller.continuar();
 			}
 		});
 		btnContinuar.addMouseListener(new MouseAdapter() {
@@ -161,7 +167,7 @@ public class CadastroUsuarioView extends JFrame {
 		btnVoltarLogin = new JButtonPersonalizado(Color.decode("#2193b0"), Color.decode("#4286f4"), 50, 50);
 		btnVoltarLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				controller.voltarParaLogin();
 			}
 		});
 		btnVoltarLogin.addMouseListener(new MouseAdapter() {
