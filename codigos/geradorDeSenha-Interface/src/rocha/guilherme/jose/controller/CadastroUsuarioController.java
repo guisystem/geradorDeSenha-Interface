@@ -1,6 +1,7 @@
 package rocha.guilherme.jose.controller;
 
 import rocha.guilherme.jose.controller.helper.CadastroUsuarioHelper;
+import rocha.guilherme.jose.model.ModelUsuario;
 import rocha.guilherme.jose.view.AutenticarEmailView;
 import rocha.guilherme.jose.view.CadastroUsuarioView;
 import rocha.guilherme.jose.view.LoginView;
@@ -25,12 +26,14 @@ public class CadastroUsuarioController {
 	}
 
 	public void continuar() {
+		ModelUsuario novoUsuario = helper.obterModelo();
+		
 		if(helper.verificarUsuario()) {
 			if(helper.validarUsuario()) {
 				if(helper.verificarEmail()) {
 					if(helper.validarEmail()) {
 						if(helper.verificarSenha()) {
-							irParaAutenticarEmail();
+							irParaAutenticarEmail(novoUsuario);
 						}else {
 							cadastroUsuarioView.exibeMensagemInformativa("Sua senha não pode ter menos que 8 caracteres!");
 						}
@@ -48,8 +51,8 @@ public class CadastroUsuarioController {
 		}
 	}
 
-	private void irParaAutenticarEmail() {
-		AutenticarEmailView autenticarEmailView = new AutenticarEmailView();
+	private void irParaAutenticarEmail(ModelUsuario novoUsuario) {
+		AutenticarEmailView autenticarEmailView = new AutenticarEmailView(novoUsuario);
 		autenticarEmailView.setLocationRelativeTo(null);
 		autenticarEmailView.setResizable(false);
 		autenticarEmailView.setVisible(true);

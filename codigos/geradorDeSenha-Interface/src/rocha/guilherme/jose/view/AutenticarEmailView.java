@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import rocha.guilherme.jose.model.ModelUsuario;
+
 @SuppressWarnings("serial")
 public class AutenticarEmailView extends JFrame {
 
@@ -25,6 +27,8 @@ public class AutenticarEmailView extends JFrame {
 	private JButtonPersonalizado btnSeCadastrar;
 	private JButtonPersonalizado btnSair;
 	
+	private static ModelUsuario usuario;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -32,7 +36,7 @@ public class AutenticarEmailView extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AutenticarEmailView frame = new AutenticarEmailView();
+					AutenticarEmailView frame = new AutenticarEmailView(usuario);
 					frame.setLocationRelativeTo(null);
 					frame.setResizable(false);
 					frame.setVisible(true);
@@ -46,8 +50,10 @@ public class AutenticarEmailView extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AutenticarEmailView() {
+	public AutenticarEmailView(ModelUsuario usuario) {
 		setUndecorated(true);
+		
+		AutenticarEmailView.usuario = usuario;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 360, 360);
@@ -64,6 +70,7 @@ public class AutenticarEmailView extends JFrame {
 		contentPane.add(lblDigiteSeuEmail);
 		
 		textFieldEmail = new JTextFieldPersonalizado(10, 10, (Color) null);
+		textFieldEmail.setText(usuario.getEmailUsuario());
 		textFieldEmail.setEditable(false);
 		textFieldEmail.setBounds(20, 64, 320, 40);
 		textFieldEmail.setOpaque(false);

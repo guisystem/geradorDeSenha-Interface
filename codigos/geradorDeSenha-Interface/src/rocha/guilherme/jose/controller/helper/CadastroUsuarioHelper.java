@@ -12,6 +12,17 @@ public class CadastroUsuarioHelper {
 		this.cadastroUsuarioView = cadastroUsuarioView;
 	}
 
+	@SuppressWarnings("deprecation")
+	public ModelUsuario obterModelo() {
+		String nomeUsuario = cadastroUsuarioView.getTextFieldUsuario().getText();
+		String emailUsuario = cadastroUsuarioView.getTextFieldEmail().getText();
+		String senha = cadastroUsuarioView.getPasswordFieldSenha().getText();
+		
+		ModelUsuario usuario = new ModelUsuario(nomeUsuario, senha, emailUsuario);
+		
+		return usuario;
+	}
+
 	public boolean verificarUsuario() {
 		if(cadastroUsuarioView.getTextFieldUsuario().getText().trim().isEmpty()) return false;
 		return true;
