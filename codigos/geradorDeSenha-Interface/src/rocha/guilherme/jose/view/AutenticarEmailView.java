@@ -13,6 +13,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import rocha.guilherme.jose.controller.AutenticarEmailController;
 import rocha.guilherme.jose.model.ModelUsuario;
@@ -93,6 +95,22 @@ public class AutenticarEmailView extends JFrame {
 		
 		textFieldCodigoRecebido = new JTextFieldPersonalizado(10, 10, (Color) null);
 		textFieldCodigoRecebido.soNumeros();
+		textFieldCodigoRecebido.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+            	atualizarStatus();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+            	atualizarStatus();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+            	atualizarStatus();
+            }
+        });
 		textFieldCodigoRecebido.setOpaque(false);
 		textFieldCodigoRecebido.setForeground(Color.WHITE);
 		textFieldCodigoRecebido.setFont(new Font("Arial", Font.PLAIN, 28));
@@ -182,6 +200,15 @@ public class AutenticarEmailView extends JFrame {
 
 	private void efeitoMouseExit(JButtonPersonalizado botao) {
 		((JButtonPersonalizado) botao).setAlpha(0.3F);
+	}
+
+	private void atualizarStatus() {
+		Boolean isValido = controller.validarCodigo();
+		if(isValido) {
+			lblStatusCodigo.setVisible(true);
+		}else {
+			lblStatusCodigo.setVisible(false);
+		}
 	}
 	
 	public void exibeMensagemInformativa(String mensagem) {
