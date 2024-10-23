@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import rocha.guilherme.jose.controller.AutenticarEmailController;
 import rocha.guilherme.jose.model.ModelUsuario;
 
 @SuppressWarnings("serial")
@@ -27,7 +28,9 @@ public class AutenticarEmailView extends JFrame {
 	private JButtonPersonalizado btnSeCadastrar;
 	private JButtonPersonalizado btnSair;
 	
+	private AutenticarEmailController controller;
 	private static ModelUsuario usuario;
+	private static CadastroUsuarioView cadastroView;
 	
 	/**
 	 * Launch the application.
@@ -36,7 +39,7 @@ public class AutenticarEmailView extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AutenticarEmailView frame = new AutenticarEmailView(usuario);
+					AutenticarEmailView frame = new AutenticarEmailView(usuario, cadastroView);
 					frame.setLocationRelativeTo(null);
 					frame.setResizable(false);
 					frame.setVisible(true);
@@ -50,10 +53,12 @@ public class AutenticarEmailView extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AutenticarEmailView(ModelUsuario usuario) {
+	public AutenticarEmailView(ModelUsuario usuario, CadastroUsuarioView cadastroView) {
 		setUndecorated(true);
 		
 		AutenticarEmailView.usuario = usuario;
+		AutenticarEmailView.cadastroView = cadastroView;
+		controller = new AutenticarEmailController(this);
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 360, 360);
@@ -107,7 +112,7 @@ public class AutenticarEmailView extends JFrame {
 		btnEnviarCodigo = new JButtonPersonalizado(Color.decode("#1E3663"), Color.decode("#133E8C"), 10, 10);
 		btnEnviarCodigo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				controller.enviarCodigo();
 			}
 		});
 		btnEnviarCodigo.addMouseListener(new MouseAdapter() {
@@ -129,7 +134,7 @@ public class AutenticarEmailView extends JFrame {
 		btnSeCadastrar = new JButtonPersonalizado(Color.decode("#1E3663"), Color.decode("#133E8C"), 10, 10);
 		btnSeCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				controller.cadastrarUsuario(usuario, cadastroView);
 			}
 		});
 		btnSeCadastrar.addMouseListener(new MouseAdapter() {
@@ -151,7 +156,7 @@ public class AutenticarEmailView extends JFrame {
 		btnSair = new JButtonPersonalizado(new Color(63, 102, 208), new Color(63, 102, 208), 10, 10);
 		btnSair.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				controller.sair();
 			}
 		});
 		btnSair.addMouseListener(new MouseAdapter() {

@@ -52,7 +52,7 @@ public class CadastroUsuarioController {
 	}
 
 	private void irParaAutenticarEmail(ModelUsuario novoUsuario) {
-		AutenticarEmailView autenticarEmailView = new AutenticarEmailView(novoUsuario);
+		AutenticarEmailView autenticarEmailView = new AutenticarEmailView(novoUsuario, cadastroUsuarioView);
 		autenticarEmailView.setLocationRelativeTo(null);
 		autenticarEmailView.setResizable(false);
 		autenticarEmailView.setVisible(true);
