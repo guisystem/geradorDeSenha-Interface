@@ -18,6 +18,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import rocha.guilherme.jose.controller.SenhasController;
+import rocha.guilherme.jose.model.ModelUsuario;
+
 @SuppressWarnings("serial")
 public class SenhasView extends JFrame {
 
@@ -26,6 +29,9 @@ public class SenhasView extends JFrame {
 	private JButton btnNovaSenha;
 	private JPanel painel;
 	
+	private static ModelUsuario usuario;
+	private SenhasController controller;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -33,7 +39,7 @@ public class SenhasView extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SenhasView frame = new SenhasView();
+					SenhasView frame = new SenhasView(usuario);
 					frame.setLocationRelativeTo(null);
 					frame.setResizable(false);
 					frame.setVisible(true);
@@ -57,8 +63,11 @@ public class SenhasView extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public SenhasView() {
+	public SenhasView(ModelUsuario usuario) {
 		setUndecorated(true);
+		SenhasView.usuario = usuario;
+		
+		controller = new SenhasController(this);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 393, 852);
@@ -78,7 +87,7 @@ public class SenhasView extends JFrame {
 		lblSair.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+				controller.sair();
 			}
 		});
 		lblSair.setIcon(new ImageIcon(SenhasView.class.getResource("/rocha/guilherme/jose/view/icones/sair.png")));

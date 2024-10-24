@@ -27,7 +27,7 @@ public class LoginController {
 		ModelUsuario usuarioAutenticado = usuarioDAO.selectPorNomeOuEmailESenha(usuario);
 		
 		if(usuarioAutenticado != null) {
-			irParaTelaInicial();
+			irParaTelaInicial(usuario);
 			loginView.dispose();
 		}else {
 			loginView.exibeMensagemInformativa("Usuário ou/e Senha inválidos");
@@ -50,8 +50,8 @@ public class LoginController {
 		redefinirSenhaView.setVisible(true);
 	}
 
-	private void irParaTelaInicial() {
-		SenhasView telaInicial = new SenhasView();
+	private void irParaTelaInicial(ModelUsuario usuario) {
+		SenhasView telaInicial = new SenhasView(usuario);
 		telaInicial.setLocationRelativeTo(null);
 		telaInicial.setResizable(false);
 		telaInicial.setVisible(true);

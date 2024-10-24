@@ -37,7 +37,7 @@ public class AutenticarEmailController {
 		if(helper.verificarCodigo()) {
 			if(validarCodigo()) {
 				usuarioDAO.insert(usuario);
-				irParaTelaInicial();
+				irParaTelaInicial(usuario);
 				cadastroView.dispose();
 				autenticarEmailView.dispose();
 			}else {
@@ -49,8 +49,8 @@ public class AutenticarEmailController {
 	
 	}
 
-	private void irParaTelaInicial() {
-		SenhasView telaInicial = new SenhasView();
+	private void irParaTelaInicial(ModelUsuario usuario) {
+		SenhasView telaInicial = new SenhasView(usuario);
 		telaInicial.setLocationRelativeTo(null);
 		telaInicial.setResizable(false);
 		telaInicial.setVisible(true);
