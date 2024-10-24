@@ -1,12 +1,14 @@
 package rocha.guilherme.jose.view;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -17,6 +19,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import rocha.guilherme.jose.controller.SenhasSalvasController;
+import rocha.guilherme.jose.model.ModelUsuario;
 import rocha.guilherme.jose.model.SenhaTableModel;
 
 @SuppressWarnings("serial")
@@ -24,11 +28,15 @@ public class SenhasSalvasPanel extends JPanel {
 
 	private JTable tableSenhas;
 	private SenhaTableModel tableModel = new SenhaTableModel();
+	private SenhasSalvasController controller;
+	private ModelUsuario usuario;
 	
 	/**
 	 * Create the panel.
 	 */
-	public SenhasSalvasPanel() {
+	public SenhasSalvasPanel(ModelUsuario usuario) {
+		this.usuario = usuario;
+		controller = new SenhasSalvasController(this);
 		
 		this.setOpaque(false);
 		this.setBounds(0, 158, 393, 694);
@@ -65,6 +73,31 @@ public class SenhasSalvasPanel extends JPanel {
 				}
 				return super.isCellEditable(row, column);
 			}
+		});
+		tableSenhas.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 1 || e.getClickCount() == 2) {
+					if (tableSenhas.getSelectedColumn() == 2 && 
+							"COPIAR".equals(tableSenhas.getValueAt(tableSenhas.getSelectedRow(), 2))) {
+						controller.copiarSenha(usuario);
+					}
+				}
+			}
+		});
+		tableSenhas.addMouseMotionListener(new MouseMotionListener() {
+		    @Override
+		    public void mouseMoved(MouseEvent e) {
+		    	if(tableSenhas.getRowCount() > 0 && tableSenhas.columnAtPoint(e.getPoint())==2) {
+		    		tableSenhas.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		    	}else{
+		    		tableSenhas.setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); 
+		    	}
+		    }
+
+		    @Override
+		    public void mouseDragged(MouseEvent e) {
+
+		    }
 		});
 		tableSenhas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableSenhas.getColumnModel().getColumn(0).setPreferredWidth(150);
@@ -116,6 +149,11 @@ public class SenhasSalvasPanel extends JPanel {
 		btnEditar.setBounds(170, 550, 150, 40);
 		this.add(btnEditar);
 		
+		iniciar();
+	}
+	
+	private void iniciar() {
+		controller.preencherTabela(usuario);
 	}
 	
 	private void efeitoMouseOver(JButton botao) {

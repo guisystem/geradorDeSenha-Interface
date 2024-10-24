@@ -99,7 +99,7 @@ public class SenhasView extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				contentPane.remove(painel);
 		        
-		        painel = new SenhasSalvasPanel();
+		        painel = new SenhasSalvasPanel(usuario);
 		        contentPane.add(painel);
 		        
 		        contentPane.revalidate();
@@ -146,7 +146,7 @@ public class SenhasView extends JFrame {
 		btnNovaSenha.setBounds(200, 96, 181, 48);
 		contentPane.add(btnNovaSenha);
 		
-		painel = new SenhasSalvasPanel();
+		painel = new SenhasSalvasPanel(usuario);
 		contentPane.add(painel);
 	}
 

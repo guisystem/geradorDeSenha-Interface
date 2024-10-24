@@ -27,7 +27,7 @@ public class LoginController {
 		ModelUsuario usuarioAutenticado = usuarioDAO.selectPorNomeOuEmailESenha(usuario);
 		
 		if(usuarioAutenticado != null) {
-			irParaTelaInicial(usuario);
+			irParaTelaInicial(usuarioAutenticado);
 			loginView.dispose();
 		}else {
 			loginView.exibeMensagemInformativa("Usuário ou/e Senha inválidos");
