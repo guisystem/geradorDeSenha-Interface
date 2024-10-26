@@ -153,7 +153,7 @@ public class SenhasSalvasPanel extends JPanel {
 	}
 	
 	private void iniciar() {
-		controller.preencherTabela(usuario);
+		SenhasSalvasController.preencherTabela(usuario);
 	}
 	
 	private void efeitoMouseOver(JButton botao) {

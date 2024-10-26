@@ -16,14 +16,14 @@ import rocha.guilherme.jose.view.SenhasSalvasPanel;
 public class SenhasSalvasController {
 
 	private SenhasSalvasPanel senhasSalvasPanel;
-	private SenhasSalvasHelper helper;
+	private static SenhasSalvasHelper helper;
 	
 	public SenhasSalvasController(SenhasSalvasPanel senhasSalvasPanel) {
 		this.senhasSalvasPanel = senhasSalvasPanel;
-		this.helper = new SenhasSalvasHelper(senhasSalvasPanel);
+		SenhasSalvasController.helper = new SenhasSalvasHelper(senhasSalvasPanel);
 	}
 
-	public void preencherTabela(ModelUsuario usuario) {
+	public static void preencherTabela(ModelUsuario usuario) {
 		helper.preencherTabela(usuario);
 	}
 

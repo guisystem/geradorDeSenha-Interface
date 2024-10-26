@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import rocha.guilherme.jose.controller.SalvarSenhaController;
 import rocha.guilherme.jose.model.ModelSenhasSalvas;
 import rocha.guilherme.jose.model.ModelUsuario;
 
@@ -30,6 +31,8 @@ public class SalvarSenhaView extends JDialog {
 	private JButton btnSair;
 	private static ModelUsuario usuario;
 	private static ModelSenhasSalvas senha;
+	
+	private SalvarSenhaController controller;
 	
 	/**
 	 * Launch the application.
@@ -57,6 +60,8 @@ public class SalvarSenhaView extends JDialog {
 		setModal(true);
 		SalvarSenhaView.usuario = usuario;
 		SalvarSenhaView.senha = senha;
+		
+		controller = new SalvarSenhaController(this);
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 361, 320);
@@ -111,7 +116,7 @@ public class SalvarSenhaView extends JDialog {
 		btnSalvarSenha = new JButtonPersonalizado(Color.decode("#1E3663"), Color.decode("#133E8C"), 5, 5);
 		btnSalvarSenha.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				controller.salvarSenha(usuario, senha);
 			}
 		});
 		btnSalvarSenha.addMouseListener(new MouseAdapter() {
@@ -133,7 +138,7 @@ public class SalvarSenhaView extends JDialog {
 		btnSair = new JButtonPersonalizado(Color.decode("#2060D2"), Color.decode("#2060D2"), 5, 5);
 		btnSair.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				controller.sair(SalvarSenhaView.this);
 			}
 		});
 		btnSair.addMouseListener(new MouseAdapter() {
@@ -152,6 +157,11 @@ public class SalvarSenhaView extends JDialog {
 		btnSair.setBounds(248, 240, 93, 48);
 		contentPane.add(btnSair);
 		
+		iniciar();
+	}
+	
+	private void iniciar() {
+		controller.preencherSenha(senha);
 	}
 
 	private void efeitoMouseOver(JButton botao) {
