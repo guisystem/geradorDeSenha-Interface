@@ -17,6 +17,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import rocha.guilherme.jose.model.ModelSenhasSalvas;
+import rocha.guilherme.jose.model.ModelUsuario;
+
 @SuppressWarnings("serial")
 public class SalvarSenhaView extends JDialog {
 
@@ -25,6 +28,8 @@ public class SalvarSenhaView extends JDialog {
 	private JTextField textFieldDescricao;
 	private JButton btnSalvarSenha;
 	private JButton btnSair;
+	private static ModelUsuario usuario;
+	private static ModelSenhasSalvas senha;
 	
 	/**
 	 * Launch the application.
@@ -33,7 +38,7 @@ public class SalvarSenhaView extends JDialog {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SalvarSenhaView frame = new SalvarSenhaView();
+					SalvarSenhaView frame = new SalvarSenhaView(usuario, senha);
 					frame.setResizable(false);
 					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
@@ -47,9 +52,11 @@ public class SalvarSenhaView extends JDialog {
 	/**
 	 * Create the frame.
 	 */
-	public SalvarSenhaView() {
+	public SalvarSenhaView(ModelUsuario usuario, ModelSenhasSalvas senha) {
 		setUndecorated(true);
 		setModal(true);
+		SalvarSenhaView.usuario = usuario;
+		SalvarSenhaView.senha = senha;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 361, 320);

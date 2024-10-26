@@ -108,7 +108,7 @@ public class SenhasSalvasPanel extends JPanel {
 		JButton btnExcluirSenha = new JButtonPersonalizado(Color.decode("#1E3663"), Color.decode("#133E8C"), 10, 10);
 		btnExcluirSenha.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				controller.excluirSenha(usuario);
 			}
 		});
 		btnExcluirSenha.setText("EXCLUIR");
@@ -130,7 +130,7 @@ public class SenhasSalvasPanel extends JPanel {
 		JButton btnEditar = new JButtonPersonalizado(Color.decode("#1E3663"), Color.decode("#133E8C"), 10, 10);
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				controller.editarDescricao(usuario);
 			}
 		});
 		btnEditar.setText("EDITAR");
