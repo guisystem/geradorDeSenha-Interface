@@ -125,7 +125,7 @@ public class SenhasView extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				contentPane.remove(painel);
 		        
-		        painel = new GerarSenhaPanel();
+		        painel = new GerarSenhaPanel(usuario);
 		        contentPane.add(painel);
 		        
 		        contentPane.revalidate();

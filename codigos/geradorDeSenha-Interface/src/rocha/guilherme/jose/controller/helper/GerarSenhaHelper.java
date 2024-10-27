@@ -126,7 +126,20 @@ public class GerarSenhaHelper {
 
 	public void mostrarSenha(ModelGerarSenha senha) {
 		gerarSenhaPanel.getTextFieldSenhaGerada().setText(senha.getSenhaGerada());
+	}
+
+	public boolean validarSenhaGerada() {
+		if(gerarSenhaPanel.getTextFieldSenhaGerada().getText().trim().isEmpty() ||
+				gerarSenhaPanel.getTextFieldSenhaGerada().getText().trim().length() < 8 ||
+				gerarSenhaPanel.getTextFieldSenhaGerada().getText().trim().length() > 30 ) {
+			return false;
+		}
 		
+		return true;
+	}
+
+	public String getSenhaGerada() {
+		return gerarSenhaPanel.getTextFieldSenhaGerada().getText().trim();
 	}
 
 }

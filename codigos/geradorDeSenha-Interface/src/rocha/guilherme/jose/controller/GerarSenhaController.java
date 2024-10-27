@@ -2,8 +2,11 @@ package rocha.guilherme.jose.controller;
 
 import rocha.guilherme.jose.controller.helper.GerarSenhaHelper;
 import rocha.guilherme.jose.model.ModelGerarSenha;
+import rocha.guilherme.jose.model.ModelSenhasSalvas;
+import rocha.guilherme.jose.model.ModelUsuario;
 import rocha.guilherme.jose.model.dao.SenhasSalvasDAO;
 import rocha.guilherme.jose.view.GerarSenhaPanel;
+import rocha.guilherme.jose.view.SalvarSenhaView;
 
 public class GerarSenhaController {
 
@@ -60,5 +63,23 @@ public class GerarSenhaController {
 			gerarSenhaPanel.getTextFieldPalavraPessoal().setEditable(false);
 		}
 	}
+
+	public void irParaTelaDeSalvarSenha(ModelUsuario usuario) {
+		if(helper.validarSenhaGerada()) {
+			SalvarSenhaView salvarSenhaView = new SalvarSenhaView(usuario, getSenha());
+			salvarSenhaView.setResizable(false);
+			salvarSenhaView.setLocationRelativeTo(null);
+			salvarSenhaView.setVisible(true);
+		}else {
+			gerarSenhaPanel.exibeMensagemInformativa("Para salvar a senha é preciso que ela tenha\n "
+					+ "um tamanho entre 8 e 30.");
+		}
+	}
+
+	private ModelSenhasSalvas getSenha() {
+		ModelSenhasSalvas senhaNova = new ModelSenhasSalvas(helper.getSenhaGerada(), "");
+		return senhaNova;
+	}
+	
 	
 }

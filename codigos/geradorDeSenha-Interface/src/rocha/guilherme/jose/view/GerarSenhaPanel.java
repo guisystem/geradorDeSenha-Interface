@@ -19,6 +19,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import rocha.guilherme.jose.controller.GerarSenhaController;
+import rocha.guilherme.jose.model.ModelUsuario;
 
 @SuppressWarnings("serial")
 public class GerarSenhaPanel extends JPanel {
@@ -66,7 +67,7 @@ public class GerarSenhaPanel extends JPanel {
 	 * Create the panel.
 	 * @param usuario 
 	 */
-	public GerarSenhaPanel() {
+	public GerarSenhaPanel(ModelUsuario usuario) {
 		this.setBounds(0, 156, 393, 696);
 		this.setOpaque(false);
 		this.setLayout(null);
@@ -266,7 +267,7 @@ public class GerarSenhaPanel extends JPanel {
 		JButton btnSalvarSenha = new JButtonPersonalizado(Color.decode("#2060D2"), Color.decode("#2060D2"), 0, 0);
 		btnSalvarSenha.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				controller.irParaTelaDeSalvarSenha(usuario);
 			}
 		});
 		btnSalvarSenha.setText("SALVAR");
