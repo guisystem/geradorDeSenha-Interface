@@ -18,6 +18,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
+import rocha.guilherme.jose.controller.GerarSenhaController;
+
 @SuppressWarnings("serial")
 public class GerarSenhaPanel extends JPanel {
 
@@ -36,6 +38,8 @@ public class GerarSenhaPanel extends JPanel {
 	private ButtonGroup formaDaLetra;
 	private ButtonGroup palavraPessoal;
 	private Color corCirculo = new Color(255, 0, 0, 0);
+	
+	private GerarSenhaController controller;
 	
 	@Override
     public void paint(Graphics g) {
@@ -66,6 +70,8 @@ public class GerarSenhaPanel extends JPanel {
 		this.setBounds(0, 156, 393, 696);
 		this.setOpaque(false);
 		this.setLayout(null);
+		
+		controller = new GerarSenhaController(this);
 		
 		JLabel lblQuantLetras_um = new JLabel("Quantas letras deseja em");
 		lblQuantLetras_um.setForeground(new Color(255, 255, 255));
@@ -210,7 +216,7 @@ public class GerarSenhaPanel extends JPanel {
 		textFieldPalavraPessoal.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				
+				controller.abrirFecharCampoPalavra();
 			}
 		});
 		textFieldPalavraPessoal.setHorizontalAlignment(SwingConstants.CENTER);
@@ -238,7 +244,7 @@ public class GerarSenhaPanel extends JPanel {
 		btnGerarSenha.setText("GERAR SENHA");
 		btnGerarSenha.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				controller.gerarSenha();
 			}
 		});
 		btnGerarSenha.addMouseListener(new MouseAdapter() {
