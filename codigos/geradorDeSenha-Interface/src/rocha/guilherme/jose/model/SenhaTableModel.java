@@ -57,8 +57,12 @@ public class SenhaTableModel extends AbstractTableModel{
 			senhas.get(linha).setDescricao((String) dado);
 			break;
 		case 2:
-            statusCopiar.set(linha, (String) dado);
-            break;
+			try {
+				statusCopiar.set(linha, (String) dado);
+				break;
+			} catch (IndexOutOfBoundsException e) {
+				break;
+			}
 		}
 		
 		this.fireTableRowsUpdated(linha, linha);

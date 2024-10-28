@@ -17,8 +17,12 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import rocha.guilherme.jose.controller.GerarSenhaController;
+import rocha.guilherme.jose.controller.helper.GerarSenhaHelper;
+import rocha.guilherme.jose.model.ModelGerarSenha;
 import rocha.guilherme.jose.model.ModelUsuario;
 
 @SuppressWarnings("serial")
@@ -41,6 +45,7 @@ public class GerarSenhaPanel extends JPanel {
 	private Color corCirculo = new Color(255, 0, 0, 0);
 	
 	private GerarSenhaController controller;
+	private GerarSenhaHelper helper;
 	
 	@Override
     public void paint(Graphics g) {
@@ -73,6 +78,7 @@ public class GerarSenhaPanel extends JPanel {
 		this.setLayout(null);
 		
 		controller = new GerarSenhaController(this);
+		helper = new GerarSenhaHelper(this);
 		
 		JLabel lblQuantLetras_um = new JLabel("Quantas letras deseja em");
 		lblQuantLetras_um.setForeground(new Color(255, 255, 255));
@@ -171,6 +177,22 @@ public class GerarSenhaPanel extends JPanel {
 		this.add(rdbtnPalavraSim);
 		
 		textFieldQuantLetras = new JTextField();
+		textFieldQuantLetras.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+            	atualizarAvisoUm();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+            	atualizarAvisoUm();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+            	atualizarAvisoUm();
+            }
+        });
 		textFieldQuantLetras.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldQuantLetras.setForeground(new Color(255, 255, 255));
 		textFieldQuantLetras.setBorder(new LineBorder(Color.WHITE));
@@ -182,6 +204,22 @@ public class GerarSenhaPanel extends JPanel {
 		textFieldQuantLetras.setColumns(10);
 		
 		textFieldQuantNumeros = new JTextField();
+		textFieldQuantNumeros.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+            	atualizarAvisoUm();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+            	atualizarAvisoUm();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+            	atualizarAvisoUm();
+            }
+        });
 		textFieldQuantNumeros.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldQuantNumeros.setForeground(new Color(255, 255, 255));
 		textFieldQuantNumeros.setBorder(new LineBorder(Color.WHITE));
@@ -193,6 +231,22 @@ public class GerarSenhaPanel extends JPanel {
 		this.add(textFieldQuantNumeros);
 		
 		textFieldQuantCaracteresEspeciais = new JTextField();
+		textFieldQuantCaracteresEspeciais.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+            	atualizarAvisoUm();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+            	atualizarAvisoUm();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+            	atualizarAvisoUm();
+            }
+        });
 		textFieldQuantCaracteresEspeciais.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldQuantCaracteresEspeciais.setForeground(new Color(255, 255, 255));
 		textFieldQuantCaracteresEspeciais.setBorder(new LineBorder(Color.WHITE));
@@ -315,6 +369,47 @@ public class GerarSenhaPanel extends JPanel {
 
 	private void efeitoMouseExit(JButton botao) {
 		((JButtonPersonalizado) botao).setAlpha(0.3F);
+	}
+	
+	private void atualizarAvisoUm() {
+		ModelGerarSenha senha = helper.obterModelo();
+		int tamanho = senha.getQuantLetras() + senha.getQuantNumeros() + senha.getQuantCaracteres();
+
+		if(!helper.validarQuantNumeros() || !helper.validarQuantLetras() || !helper.validarQuantCaractere()) {
+			return;
+		}
+		
+		if(tamanho == 0) {
+			corCirculo = new Color(255, 0, 0, 0);
+			lblAvisoSenha_Um.setText("");
+		}else if(tamanho < 8) {
+            corCirculo = Color.RED;
+            lblAvisoSenha_Um.setText("Senha muito pequena");
+        }else if(tamanho <= 10) {
+            corCirculo = Color.BLUE;
+            lblAvisoSenha_Um.setText("Senha fraca");
+        }else if(tamanho <= 12){        	
+        	corCirculo = Color.YELLOW;
+        	lblAvisoSenha_Um.setText("Senha moderada");
+        }else if(tamanho <= 30) {
+        	corCirculo = Color.GREEN;
+        	lblAvisoSenha_Um.setText("Senha segura");
+        }else {
+        	corCirculo = Color.RED;
+        	lblAvisoSenha_Um.setText("Senha muito grande");
+        }
+		
+		atualizarAvisoDois(tamanho);
+
+        repaint();
+	}
+
+	private void atualizarAvisoDois(int tamanho) {
+		if(tamanho != 0 && tamanho < 8 || tamanho > 30) {
+			lblAvisoSenha_Dois.setForeground(new Color(255, 255, 255));
+		}else {
+			lblAvisoSenha_Dois.setForeground(new Color(255, 255, 255, 0));
+		}
 	}
 	
 	public void exibeMensagemInformativa(String mensagem) {
