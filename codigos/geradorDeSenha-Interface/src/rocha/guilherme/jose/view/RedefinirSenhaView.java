@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import rocha.guilherme.jose.controller.RedefinirSenhaController;
+
 @SuppressWarnings("serial")
 public class RedefinirSenhaView extends JFrame {
 
@@ -23,6 +25,8 @@ public class RedefinirSenhaView extends JFrame {
 	private JButtonPersonalizado btnEnviarCodigo;
 	private JButtonPersonalizado btnRedefinir;
 	private JButtonPersonalizado btnSair;
+	
+	private RedefinirSenhaController controller;
 	
 	/**
 	 * Launch the application.
@@ -47,6 +51,8 @@ public class RedefinirSenhaView extends JFrame {
 	 */
 	public RedefinirSenhaView() {
 		setUndecorated(true);
+		
+		controller = new RedefinirSenhaController(this);
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 360, 388);
@@ -105,7 +111,7 @@ public class RedefinirSenhaView extends JFrame {
 		btnEnviarCodigo = new JButtonPersonalizado(Color.decode("#1E3663"), Color.decode("#133E8C"), 10, 10);
 		btnEnviarCodigo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				controller.enviarCodigo();
 			}
 		});
 		btnEnviarCodigo.addMouseListener(new MouseAdapter() {
@@ -127,7 +133,7 @@ public class RedefinirSenhaView extends JFrame {
 		btnRedefinir = new JButtonPersonalizado(Color.decode("#1E3663"), Color.decode("#133E8C"), 10, 10);
 		btnRedefinir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				controller.redefinirSenha();
 			}
 		});
 		btnRedefinir.addMouseListener(new MouseAdapter() {
@@ -149,7 +155,7 @@ public class RedefinirSenhaView extends JFrame {
 		btnSair = new JButtonPersonalizado(new Color(63, 102, 208), new Color(63, 102, 208), 10, 10);
 		btnSair.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				controller.sair();
 			}
 		});
 		btnSair.addMouseListener(new MouseAdapter() {
