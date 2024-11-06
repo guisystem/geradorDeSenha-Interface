@@ -2,11 +2,28 @@ package rocha.guilherme.jose.model;
 
 import java.util.Objects;
 
-public class ModelSenhasSalvas {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
+@Entity (name = "senhassalvas")
+public class ModelSenhasSalvas {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
+	@Column (nullable = false)
 	private String senha;
+
 	private String descricao;
+
+	@ManyToOne
+	@JoinColumn (name = "usuario")
 	private ModelUsuario usuario;
 	
 	public ModelSenhasSalvas() {

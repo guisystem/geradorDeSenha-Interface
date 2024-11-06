@@ -3,12 +3,33 @@ package rocha.guilherme.jose.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModelUsuario {
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
+@Entity(name = "usuario")
+public class ModelUsuario {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
+	@Column(nullable = false, unique = true)
 	private String nomeUsuario;
-	private String senhaUsuario;
+
+	@Column(nullable = false, unique = true)
 	private String emailUsuario;
+
+	@Column(nullable = false)
+	private String senhaUsuario;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "usuario")
 	private List<ModelSenhasSalvas> senhasSalvas = new ArrayList<>();
 	
 	public ModelUsuario() {
