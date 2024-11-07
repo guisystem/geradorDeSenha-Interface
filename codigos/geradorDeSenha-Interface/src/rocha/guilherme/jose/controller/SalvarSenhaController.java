@@ -1,5 +1,6 @@
 package rocha.guilherme.jose.controller;
 
+import javax.persistence.EntityManager;
 import javax.swing.JOptionPane;
 
 import rocha.guilherme.jose.controller.helper.SalvarSenhaHelper;
@@ -7,16 +8,19 @@ import rocha.guilherme.jose.model.ModelSenhasSalvas;
 import rocha.guilherme.jose.model.ModelUsuario;
 import rocha.guilherme.jose.model.dao.SenhasSalvasDAO;
 import rocha.guilherme.jose.model.dao.UsuarioDAO;
+import rocha.guilherme.jose.servico.JPAConnection;
 import rocha.guilherme.jose.view.SalvarSenhaView;
 
 public class SalvarSenhaController {
 
 	private SalvarSenhaView salvarSenhaView;
 	private SalvarSenhaHelper helper;
+	private EntityManager em;
 	
 	public SalvarSenhaController(SalvarSenhaView salvarSenhaView) {
 		this.salvarSenhaView = salvarSenhaView;
 		this.helper = new SalvarSenhaHelper(salvarSenhaView);
+		this.em = new JPAConnection().getEntityManager();
 	}
 
 	public void preencherSenha(ModelSenhasSalvas senha) {
@@ -40,7 +44,7 @@ public class SalvarSenhaController {
 
 	private void atualizarOuSalvar(ModelUsuario usuario, ModelSenhasSalvas senha, ModelSenhasSalvas senhaTela) {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
-		SenhasSalvasDAO senhasSalvasDAO = new SenhasSalvasDAO();
+		SenhasSalvasDAO senhasSalvasDAO = new SenhasSalvasDAO(em);
 		
 		if(usuario.senhaJaExiste(senha)) {
 			senha.setDescricao(senhaTela.getDescricao());

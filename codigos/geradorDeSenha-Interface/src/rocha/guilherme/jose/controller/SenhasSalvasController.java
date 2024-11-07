@@ -3,6 +3,7 @@ package rocha.guilherme.jose.controller;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 
+import javax.persistence.EntityManager;
 import javax.swing.JOptionPane;
 
 import rocha.guilherme.jose.controller.helper.SenhasSalvasHelper;
@@ -10,6 +11,7 @@ import rocha.guilherme.jose.model.ModelSenhasSalvas;
 import rocha.guilherme.jose.model.ModelUsuario;
 import rocha.guilherme.jose.model.dao.SenhasSalvasDAO;
 import rocha.guilherme.jose.model.dao.UsuarioDAO;
+import rocha.guilherme.jose.servico.JPAConnection;
 import rocha.guilherme.jose.view.SalvarSenhaView;
 import rocha.guilherme.jose.view.SenhasSalvasPanel;
 
@@ -17,10 +19,12 @@ public class SenhasSalvasController {
 
 	private SenhasSalvasPanel senhasSalvasPanel;
 	private static SenhasSalvasHelper helper;
+	private EntityManager em;
 	
 	public SenhasSalvasController(SenhasSalvasPanel senhasSalvasPanel) {
 		this.senhasSalvasPanel = senhasSalvasPanel;
 		SenhasSalvasController.helper = new SenhasSalvasHelper(senhasSalvasPanel);
+		this.em = new JPAConnection().getEntityManager();
 	}
 
 	public static void preencherTabela(ModelUsuario usuario) {
@@ -47,7 +51,7 @@ public class SenhasSalvasController {
 
 	public void excluirSenha(ModelUsuario usuario) {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
-		SenhasSalvasDAO senhasSalvasDAO = new SenhasSalvasDAO();
+		SenhasSalvasDAO senhasSalvasDAO = new SenhasSalvasDAO(em);
 		
 		if(getLinhaSelecionada() != -1) {
 			if(senhasSalvasPanel.exibeMensagemDecisao("Deseja excluir essa senha?") == 

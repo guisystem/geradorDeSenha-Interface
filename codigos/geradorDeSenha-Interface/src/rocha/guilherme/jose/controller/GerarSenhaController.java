@@ -1,10 +1,13 @@
 package rocha.guilherme.jose.controller;
 
+import javax.persistence.EntityManager;
+
 import rocha.guilherme.jose.controller.helper.GerarSenhaHelper;
 import rocha.guilherme.jose.model.ModelGerarSenha;
 import rocha.guilherme.jose.model.ModelSenhasSalvas;
 import rocha.guilherme.jose.model.ModelUsuario;
 import rocha.guilherme.jose.model.dao.SenhasSalvasDAO;
+import rocha.guilherme.jose.servico.JPAConnection;
 import rocha.guilherme.jose.view.GerarSenhaPanel;
 import rocha.guilherme.jose.view.SalvarSenhaView;
 
@@ -12,15 +15,17 @@ public class GerarSenhaController {
 
 	private GerarSenhaPanel gerarSenhaPanel;
 	private GerarSenhaHelper helper;
+	private EntityManager em;
 	
 	public GerarSenhaController(GerarSenhaPanel gerarSenhaPanel) {
 		this.gerarSenhaPanel = gerarSenhaPanel;
 		this.helper = new GerarSenhaHelper(gerarSenhaPanel);
+		this.em = new JPAConnection().getEntityManager();
 	}
 
 	public void gerarSenha() {
 		ModelGerarSenha senha = helper.obterModelo();
-		SenhasSalvasDAO senhasSalvas = new SenhasSalvasDAO();
+		SenhasSalvasDAO senhasSalvas = new SenhasSalvasDAO(em);
 		
 		if(helper.validarQuantLetras()) {
 			if(helper.validarQuantNumeros()) {
