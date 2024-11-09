@@ -1,9 +1,12 @@
 package rocha.guilherme.jose.controller;
 
+import javax.persistence.EntityManager;
+
 import rocha.guilherme.jose.controller.helper.AutenticarEmailHelper;
 import rocha.guilherme.jose.model.ModelUsuario;
 import rocha.guilherme.jose.model.dao.UsuarioDAO;
 import rocha.guilherme.jose.servico.Email;
+import rocha.guilherme.jose.servico.JPAConnection;
 import rocha.guilherme.jose.view.AutenticarEmailView;
 import rocha.guilherme.jose.view.CadastroUsuarioView;
 import rocha.guilherme.jose.view.SenhasView;
@@ -12,11 +15,13 @@ public class AutenticarEmailController {
 
 	private final AutenticarEmailView autenticarEmailView;
 	private final AutenticarEmailHelper helper;
+	private final EntityManager em;
 	private String codigoGerado;
 	
 	public AutenticarEmailController(AutenticarEmailView autenticarEmailView) {
 		this.autenticarEmailView = autenticarEmailView;
 		this.helper = new AutenticarEmailHelper(autenticarEmailView);
+		this.em = new JPAConnection().getEntityManager();
 	}
 
 	public void enviarCodigo() {
@@ -32,7 +37,7 @@ public class AutenticarEmailController {
 	}
 
 	public void cadastrarUsuario(ModelUsuario usuario, CadastroUsuarioView cadastroView) {
-		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		UsuarioDAO usuarioDAO = new UsuarioDAO(em);
 		
 		if(helper.verificarCodigo()) {
 			if(validarCodigo()) {

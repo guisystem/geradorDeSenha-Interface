@@ -1,21 +1,26 @@
 package rocha.guilherme.jose.controller;
 
+import javax.persistence.EntityManager;
+
 import rocha.guilherme.jose.controller.helper.RedefinirSenhaHelper;
 import rocha.guilherme.jose.model.ModelUsuario;
 import rocha.guilherme.jose.model.dao.BancoDeDados;
 import rocha.guilherme.jose.model.dao.UsuarioDAO;
 import rocha.guilherme.jose.servico.Email;
+import rocha.guilherme.jose.servico.JPAConnection;
 import rocha.guilherme.jose.view.RedefinirSenhaView;
 
 public class RedefinirSenhaController {
 
 	private final RedefinirSenhaView redefinirSenhaView;
 	private final RedefinirSenhaHelper helper;
+	private final EntityManager em;
 	private String codigoGerado;
 	
 	public RedefinirSenhaController(RedefinirSenhaView redefinirSenhaView) {
 		this.redefinirSenhaView = redefinirSenhaView;
 		this.helper = new RedefinirSenhaHelper(redefinirSenhaView);
+		this.em = new JPAConnection().getEntityManager();
 	}
 	
 	public void enviarCodigo() {
@@ -36,7 +41,7 @@ public class RedefinirSenhaController {
 
 	public void redefinirSenha() {
 		ModelUsuario usuario = buscarUsuario();
-		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		UsuarioDAO usuarioDAO = new UsuarioDAO(em);
 		
 		if(helper.verificarEmail()) {
 			if(usuario != null) {

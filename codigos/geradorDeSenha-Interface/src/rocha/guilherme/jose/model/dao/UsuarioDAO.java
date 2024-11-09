@@ -1,124 +1,84 @@
 package rocha.guilherme.jose.model.dao;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
 
 import rocha.guilherme.jose.model.ModelUsuario;
 
 public class UsuarioDAO {
 
-	/**
-     * Insere um usuario dentro do banco de dados
-     * @param usuario exige que seja passado um objeto do tipo usuario
-     */
-    public void insert(ModelUsuario usuario){
-        BancoDeDados.usuarios.add(usuario);
+	private final EntityManager em;
+	
+	public UsuarioDAO(EntityManager em) {
+		this.em = em;
+	}
+	
+    public ModelUsuario insert(ModelUsuario usuario){
+        em.persist(usuario);
+        return usuario;
     }
     
-    /**
-     * Atualiza um usuario no banco de dados
-     * @param usuario
-     * @return verdadeiro caso atualize o usuário e false caso nao
-     */
-    public boolean update(ModelUsuario usuario){
-        
-        for (int i = 0; i < BancoDeDados.usuarios.size(); i++) {
-            if(idSaoIguais(BancoDeDados.usuarios.get(i),usuario)){
-            	BancoDeDados.usuarios.set(i, usuario);
-                return true;
-            }
-        }
-        return false;      
+    public ModelUsuario update(ModelUsuario usuario){
+       em.merge(usuario);
+       return usuario;
+    }
+    
+    public ModelUsuario insertOrUpdate(ModelUsuario usuario) {
+		if(usuario.getId() > 0) {
+			return update(usuario);
+		}
+		
+		return insert(usuario);
+	}
 
+    public void delete(ModelUsuario usuario){
+        em.merge(usuario);
+        em.remove(usuario);
     }
     
-    /**
-     * Deleta um usuario do banco de dados pelo id do usuario passado
-     * @param usuario
-     * @return verdadeiro caso remova o usuário e false caso nao
-     */
-    public boolean delete(ModelUsuario usuario){
-        for (ModelUsuario usuarioLista : BancoDeDados.usuarios) {
-            if(idSaoIguais(usuarioLista,usuario)){
-            	BancoDeDados.usuarios.remove(usuarioLista);
-                return true;
-            }
-        }
-        return false;
+    public List<ModelUsuario> selectAll(){
+    	String jpql = "SELECT u FROM usuario as u";
+    	Query query = em.createQuery(jpql);
+        return consulta(query);
     }
     
-    /**
-     * Retorna um arraylist com todos os usuarios do banco de dados
-     * @return uma lista com todos os registros de usuario do banco
-     */
-    public ArrayList<ModelUsuario> selectAll(){
-        return BancoDeDados.usuarios;
-    }
-    
-    /**
-     * Retorna um Objeto do tipo usuario se a funcao encontrar o usuario 
-     * passado como parametro no banco, para considerar sao usado nome, email e senha
-     * @param usuario
-     * @return Usuario encontrado no banco de dados
-     */
-    public ModelUsuario selectPorNomeOuEmailESenha(ModelUsuario usuario){
-        for (ModelUsuario usuarioLista : BancoDeDados.usuarios) {
-            if(nomeOuEmailESenhaSaoIguais(usuarioLista,usuario)){
-                return usuarioLista;
-            }
-        }
-        return null;
-    }
-    
-    /**
-     * Retorna um usuario caso existe um nome de usuario já existente no banco
-     * @param usuario
-     * @return Usuario com nome de usuário igual no banco de dados
-     */
-    public ModelUsuario selectPorNome(ModelUsuario usuario) {
-    	for (ModelUsuario usuarioCadastrado: BancoDeDados.usuarios) {
-    		if(NomeUsuarioIguais(usuarioCadastrado, usuario)) {
-    			return usuarioCadastrado;
-    		}
-    	}
+    public ModelUsuario selectPorNomeOuEmailESenha(ModelUsuario usuario) {
+    	String jpql = "SELECT u FROM usuario AS u WHERE u.nomeUsuario = :pUsuario AND u.senhaUsuario = :pSenha OR "
+    			+ "u.emailUsuario = :pEmail AND u.senhaUsuario = :pSenha";
+    	Query query = em.createQuery(jpql);
     	
-    	return null;
+    	query.setParameter("pUsuario", usuario.getNomeUsuario());
+    	query.setParameter("pEmail", usuario.getEmailUsuario());
+    	query.setParameter("pSenha", usuario.getSenhaUsuario());
+    	
+    	return consulta(query).isEmpty() ? null : consulta(query).get(0);
     }
     
-    /**
-     * Recebe dois objetos e verifica se sao iguais verificando o nome, email e senha
-     * @param usuario
-     * @param usuarioAPesquisar
-     * @return verdadeiro caso sejam iguais e falso caso nao forem iguais
-     */
-    private boolean nomeOuEmailESenhaSaoIguais(ModelUsuario usuario, ModelUsuario usuarioAPesquisar) {
-        return usuario.getNomeUsuario().equals(usuarioAPesquisar.getNomeUsuario()) && 
-        		usuario.getSenhaUsuario().equals(usuarioAPesquisar.getSenhaUsuario()) ||
-        		usuario.getEmailUsuario().equals(usuarioAPesquisar.getEmailUsuario()) &&
-        		usuario.getSenhaUsuario().equals(usuarioAPesquisar.getSenhaUsuario());
+    public ModelUsuario selectPorNome(ModelUsuario usuario) {
+    	String jpql = "SELECT u FROM usuario as u WHERE u.nomeUsuario = :pUsuario";
+    	Query query = em.createQuery(jpql);
+    	
+    	query.setParameter("pUsuario", usuario.getNomeUsuario());
+    	
+    	return consulta(query).isEmpty() ? null : consulta(query).get(0);
     }
     
-    /**
-     * Recebe dois objetos e verifica se sao iguais verificando o nome de usuario
-     * @param usuario
-     * @param usuarioAPesquisar
-     * @return verdadeiro caso sejam iguais e falso caso nao forem iguais
-     */
-    private boolean NomeUsuarioIguais(ModelUsuario usuario, ModelUsuario usuarioApesquisar) {
-    	 if(usuario.getNomeUsuario().equals(usuarioApesquisar.getNomeUsuario())){
-    		 return true;
-    	 }
-    	 
-    	 return false;
-    }
-    
-    /**
-     * Compara se dois objetos tem a propriedade id igual
-     * @param usuario
-     * @param usuarioAComparar
-     * @return verdadeiro caso os id forem iguais e falso se nao forem
-     */
-    private boolean idSaoIguais(ModelUsuario usuario, ModelUsuario usuarioAComparar) {
-        return usuario.getId() == usuarioAComparar.getId();
-    }
+    @SuppressWarnings("unchecked")
+	private List<ModelUsuario> consulta(Query query) {
+		List<ModelUsuario> usuarios;
+		
+		try {
+			usuarios = query.getResultList();
+		}catch(NoResultException e) {
+			usuarios = new ArrayList<>();
+		}
+		
+		return usuarios;
+		
+	}
     
 }

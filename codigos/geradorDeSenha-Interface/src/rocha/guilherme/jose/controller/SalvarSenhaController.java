@@ -43,7 +43,7 @@ public class SalvarSenhaController {
 	}
 
 	private void atualizarOuSalvar(ModelUsuario usuario, ModelSenhasSalvas senha, ModelSenhasSalvas senhaTela) {
-		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		UsuarioDAO usuarioDAO = new UsuarioDAO(em);
 		SenhasSalvasDAO senhasSalvasDAO = new SenhasSalvasDAO(em);
 		
 		if(usuario.senhaJaExiste(senha)) {

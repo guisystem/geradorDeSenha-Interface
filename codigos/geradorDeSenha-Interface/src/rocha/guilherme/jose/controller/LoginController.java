@@ -1,10 +1,12 @@
 package rocha.guilherme.jose.controller;
 
+import javax.persistence.EntityManager;
 import javax.swing.JOptionPane;
 
 import rocha.guilherme.jose.controller.helper.LoginHelper;
 import rocha.guilherme.jose.model.ModelUsuario;
 import rocha.guilherme.jose.model.dao.UsuarioDAO;
+import rocha.guilherme.jose.servico.JPAConnection;
 import rocha.guilherme.jose.view.CadastroUsuarioView;
 import rocha.guilherme.jose.view.LoginView;
 import rocha.guilherme.jose.view.RedefinirSenhaView;
@@ -14,16 +16,18 @@ public class LoginController {
 
 	private final LoginView loginView;
 	private final LoginHelper helper;
+	private final EntityManager em;
 	
 	public LoginController(LoginView loginView) {
 		this.loginView = loginView;
 		this.helper = new LoginHelper(loginView);
+		this.em = new JPAConnection().getEntityManager();
 	}
 
 	public void entrarNoAplicativo() {
 		ModelUsuario usuario = helper.obterModelo();
 		
-		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		UsuarioDAO usuarioDAO = new UsuarioDAO(em);
 		ModelUsuario usuarioAutenticado = usuarioDAO.selectPorNomeOuEmailESenha(usuario);
 		
 		if(usuarioAutenticado != null) {

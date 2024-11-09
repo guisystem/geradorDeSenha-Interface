@@ -50,7 +50,7 @@ public class SenhasSalvasController {
 	}
 
 	public void excluirSenha(ModelUsuario usuario) {
-		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		UsuarioDAO usuarioDAO = new UsuarioDAO(em);
 		SenhasSalvasDAO senhasSalvasDAO = new SenhasSalvasDAO(em);
 		
 		if(getLinhaSelecionada() != -1) {
