@@ -1,7 +1,9 @@
 package rocha.guilherme.jose.controller.helper;
 
+import javax.persistence.EntityManager;
+
 import rocha.guilherme.jose.model.ModelUsuario;
-import rocha.guilherme.jose.model.dao.BancoDeDados;
+import rocha.guilherme.jose.model.dao.UsuarioDAO;
 import rocha.guilherme.jose.view.CadastroUsuarioView;
 
 public class CadastroUsuarioHelper {
@@ -23,24 +25,30 @@ public class CadastroUsuarioHelper {
 		return usuario;
 	}
 
-	public boolean verificarUsuario() {
-		if(cadastroUsuarioView.getTextFieldUsuario().getText().trim().isEmpty()) return false;
+	@SuppressWarnings("deprecation")
+	public boolean verificarCampos() {
+		if(cadastroUsuarioView.getTextFieldUsuario().getText().trim().isEmpty() ||
+				cadastroUsuarioView.getTextFieldEmail().getText().trim().isEmpty() ||
+				cadastroUsuarioView.getPasswordFieldSenha().getText().trim().isEmpty()) {
+			return false;			
+		}
+		
 		return true;
 	}
 	
-	public boolean validarUsuario() {
-		String nomeUsuario = cadastroUsuarioView.getTextFieldUsuario().getText().trim();
+	public boolean validarNomeUsuario(EntityManager em, ModelUsuario novoUsuario) {
+		UsuarioDAO usuarioDAO = new UsuarioDAO(em);
 		
-		for(ModelUsuario usuario: BancoDeDados.usuarios) {
-			if(nomeUsuario.equals(usuario.getNomeUsuario())) {
-				return false;
-			}
+		ModelUsuario usuarioExiste = usuarioDAO.selectPorNome(novoUsuario);
+		
+		if(usuarioExiste != null) {
+			return false;
 		}
 		
 		return true;
 	}
 
-	public boolean verificarEmail() {
+	public boolean validarEmail() {
 		if(cadastroUsuarioView.getTextFieldEmail().getText().trim().isEmpty()) return false;
 		
 		String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
@@ -54,12 +62,12 @@ public class CadastroUsuarioHelper {
 		return true;
 	}
 
-	public boolean validarEmail() {
-		String emailUsuario = cadastroUsuarioView.getTextFieldEmail().getText().trim();
+	public boolean verificarEmailDisponivel(EntityManager em, ModelUsuario novoUsuario) {
+		UsuarioDAO usuarioDAO = new UsuarioDAO(em);
 		
-		for(ModelUsuario usuario: BancoDeDados.usuarios) {
-			if(emailUsuario.equals(usuario.getEmailUsuario())) {
-				return false;
+		for(ModelUsuario usuarioBanco: usuarioDAO.selectAll()) {
+			if(usuarioBanco.getEmailUsuario().equals(novoUsuario.getEmailUsuario())) {
+				return false;				
 			}
 		}
 		
@@ -67,7 +75,7 @@ public class CadastroUsuarioHelper {
 	}
 
 	@SuppressWarnings("deprecation")
-	public boolean verificarSenha() {
+	public boolean validarSenha() {
 		if(cadastroUsuarioView.getPasswordFieldSenha().getText().trim().length() < 8) return false;
 		if(cadastroUsuarioView.getPasswordFieldSenha().getText().trim().isEmpty()) return false;
 		return true;

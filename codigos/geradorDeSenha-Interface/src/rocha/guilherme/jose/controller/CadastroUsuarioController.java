@@ -1,7 +1,10 @@
 package rocha.guilherme.jose.controller;
 
+import javax.persistence.EntityManager;
+
 import rocha.guilherme.jose.controller.helper.CadastroUsuarioHelper;
 import rocha.guilherme.jose.model.ModelUsuario;
+import rocha.guilherme.jose.servico.JPAConnection;
 import rocha.guilherme.jose.view.AutenticarEmailView;
 import rocha.guilherme.jose.view.CadastroUsuarioView;
 import rocha.guilherme.jose.view.LoginView;
@@ -10,10 +13,12 @@ public class CadastroUsuarioController {
 
 	private final CadastroUsuarioView cadastroUsuarioView;
 	private final CadastroUsuarioHelper helper;
+	private final EntityManager em;
 
 	public CadastroUsuarioController(CadastroUsuarioView cadastroUsuarioView) {
 		this.cadastroUsuarioView = cadastroUsuarioView;
 		this.helper = new CadastroUsuarioHelper(cadastroUsuarioView);
+		this.em = new JPAConnection().getEntityManager();
 	}
 
 	public void voltarParaLogin() {
@@ -28,11 +33,11 @@ public class CadastroUsuarioController {
 	public void continuar() {
 		ModelUsuario novoUsuario = helper.obterModelo();
 		
-		if(helper.verificarUsuario()) {
-			if(helper.validarUsuario()) {
-				if(helper.verificarEmail()) {
-					if(helper.validarEmail()) {
-						if(helper.verificarSenha()) {
+		if(helper.verificarCampos()) {
+			if(helper.validarNomeUsuario(em, novoUsuario)) {
+				if(helper.validarEmail()) {
+					if(helper.verificarEmailDisponivel(em, novoUsuario)) {
+						if(helper.validarSenha()) {
 							irParaAutenticarEmail(novoUsuario);
 						}else {
 							cadastroUsuarioView.exibeMensagemInformativa("Sua senha não pode ter menos que 8 caracteres!");
