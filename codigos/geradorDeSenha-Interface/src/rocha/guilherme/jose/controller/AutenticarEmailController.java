@@ -5,6 +5,7 @@ import javax.persistence.EntityManager;
 import rocha.guilherme.jose.controller.helper.AutenticarEmailHelper;
 import rocha.guilherme.jose.model.ModelUsuario;
 import rocha.guilherme.jose.model.dao.UsuarioDAO;
+import rocha.guilherme.jose.servico.Criptografar;
 import rocha.guilherme.jose.servico.Email;
 import rocha.guilherme.jose.servico.JPAConnection;
 import rocha.guilherme.jose.view.AutenticarEmailView;
@@ -43,6 +44,7 @@ public class AutenticarEmailController {
 		
 		if(helper.verificarCodigo()) {
 			if(validarCodigo()) {
+				criptografarSenha(usuario);
 				usuarioDAO.insert(usuario);
 				irParaTelaInicial(usuario);
 				cadastroView.dispose();
@@ -56,6 +58,10 @@ public class AutenticarEmailController {
 		
 		em.getTransaction().commit();
 	
+	}
+	
+	private void criptografarSenha(ModelUsuario usuario) {
+		usuario.setSenhaUsuario(Criptografar.criptografar(usuario.getSenhaUsuario()));
 	}
 
 	private void irParaTelaInicial(ModelUsuario usuario) {
