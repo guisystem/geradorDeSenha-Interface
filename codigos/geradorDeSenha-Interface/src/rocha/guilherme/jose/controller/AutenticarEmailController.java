@@ -37,6 +37,8 @@ public class AutenticarEmailController {
 	}
 
 	public void cadastrarUsuario(ModelUsuario usuario, CadastroUsuarioView cadastroView) {
+		em.getTransaction().begin();
+		
 		UsuarioDAO usuarioDAO = new UsuarioDAO(em);
 		
 		if(helper.verificarCodigo()) {
@@ -51,6 +53,8 @@ public class AutenticarEmailController {
 		}else {
 			autenticarEmailView.exibeMensagemInformativa("Digite o código recebido!");
 		}
+		
+		em.getTransaction().commit();
 	
 	}
 
