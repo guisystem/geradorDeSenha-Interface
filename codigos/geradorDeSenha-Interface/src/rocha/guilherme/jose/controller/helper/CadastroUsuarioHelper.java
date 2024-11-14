@@ -20,7 +20,7 @@ public class CadastroUsuarioHelper {
 		String emailUsuario = cadastroUsuarioView.getTextFieldEmail().getText();
 		String senha = cadastroUsuarioView.getPasswordFieldSenha().getText();
 		
-		ModelUsuario usuario = new ModelUsuario(nomeUsuario, senha, emailUsuario);
+		ModelUsuario usuario = new ModelUsuario(nomeUsuario, emailUsuario, senha);
 		
 		return usuario;
 	}

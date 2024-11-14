@@ -18,19 +18,32 @@ public class RedefinirSenhaHelper {
 		return redefinirSenhaView.getTextFieldCodigoRecebido().getText().trim();
 	}
 
-	public boolean verificarEmail() {
+	public boolean validarEmail() {
 		if(redefinirSenhaView.getTextFieldEmail().getText().trim().isEmpty()) return false;
+		
+		String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
+
+		if (!redefinirSenhaView.getTextFieldEmail().getText().matches(emailRegex)) {
+		    return false;
+		} else if (!redefinirSenhaView.getTextFieldEmail().getText().contains("gmail.com")) {
+		    return false;
+		}
+		
+		return true;
+	}
+
+	public boolean verificarCampos() {
+		if(redefinirSenhaView.getTextFieldEmail().getText().trim().isEmpty() ||
+				redefinirSenhaView.getTextFieldCodigoRecebido().getText().trim().isEmpty() ||
+				redefinirSenhaView.getTextFieldNovaSenha().getText().trim().isEmpty()) {
+			return false;
+		}
+		
 		return true;
 	}
 	
 	public boolean validarSenha() {
-		if(redefinirSenhaView.getTextFieldNovaSenha().getText().trim().isEmpty()) return false;
 		if(redefinirSenhaView.getTextFieldNovaSenha().getText().trim().length() < 8) return false;
-		return true;
-	}
-
-	public boolean verificarCodigo() {
-		if(redefinirSenhaView.getTextFieldCodigoRecebido().getText().trim().isEmpty()) return false;
 		return true;
 	}
 

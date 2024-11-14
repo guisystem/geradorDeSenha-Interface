@@ -10,25 +10,25 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity(name = "usuario")
 public class ModelUsuario {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
 	@Column(nullable = false, unique = true)
 	private String nomeUsuario;
-
+	
 	@Column(nullable = false, unique = true)
 	private String emailUsuario;
 
 	@Column(nullable = false)
 	private String senhaUsuario;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "usuario")
 	private List<ModelSenhasSalvas> senhasSalvas = new ArrayList<>();
 	
@@ -36,17 +36,17 @@ public class ModelUsuario {
 
 	}
 	
-	public ModelUsuario(int id, String nomeUsuario, String senhaUsuario, String emailUsuario) {
+	public ModelUsuario(int id, String nomeUsuario, String emailUsuario, String senhaUsuario) {
 		this.id = id;
 		this.nomeUsuario = nomeUsuario;
-		this.senhaUsuario = senhaUsuario;
 		this.emailUsuario = emailUsuario;
+		this.senhaUsuario = senhaUsuario;
 	}
 
-	public ModelUsuario(String nomeUsuario, String senhaUsuario, String emailUsuario) {
+	public ModelUsuario(String nomeUsuario, String emailUsuario, String senhaUsuario) {
 		this.nomeUsuario = nomeUsuario;
-		this.senhaUsuario = senhaUsuario;
 		this.emailUsuario = emailUsuario;
+		this.senhaUsuario = senhaUsuario;
 	}
 
 	public int getId() {
@@ -99,7 +99,7 @@ public class ModelUsuario {
 
 	public boolean senhaJaExiste(ModelSenhasSalvas senha) {
 		for(ModelSenhasSalvas senhas: this.senhasSalvas) {
-			if(senha.equals(senhas)) {
+			if(senha.getSenha().equals(senhas.getSenha())) {
 				return true;
 			}
 		}

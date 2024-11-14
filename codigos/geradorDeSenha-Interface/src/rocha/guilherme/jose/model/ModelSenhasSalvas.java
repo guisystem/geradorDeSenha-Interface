@@ -1,7 +1,5 @@
 package rocha.guilherme.jose.model;
 
-import java.util.Objects;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,20 +8,20 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-@Entity (name = "senhassalvas")
+@Entity(name = "senhassalvas")
 public class ModelSenhasSalvas {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column (nullable = false)
+	@Column(nullable = false)
 	private String senha;
-
+	
 	private String descricao;
-
+	
 	@ManyToOne
-	@JoinColumn (name = "usuario")
+	@JoinColumn(name = "usuario")
 	private ModelUsuario usuario;
 	
 	public ModelSenhasSalvas() {
@@ -78,23 +76,6 @@ public class ModelSenhasSalvas {
 
 	public void setUsuario(ModelUsuario usuario) {
 		this.usuario = usuario;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(senha);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ModelSenhasSalvas other = (ModelSenhasSalvas) obj;
-		return Objects.equals(senha, other.senha);
 	}
 	
 }
