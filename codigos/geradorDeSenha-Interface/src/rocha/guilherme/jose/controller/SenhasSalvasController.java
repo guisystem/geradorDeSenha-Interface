@@ -11,15 +11,16 @@ import rocha.guilherme.jose.model.ModelSenhasSalvas;
 import rocha.guilherme.jose.model.ModelUsuario;
 import rocha.guilherme.jose.model.dao.SenhasSalvasDAO;
 import rocha.guilherme.jose.model.dao.UsuarioDAO;
+import rocha.guilherme.jose.servico.Criptografar;
 import rocha.guilherme.jose.servico.JPAConnection;
 import rocha.guilherme.jose.view.SalvarSenhaView;
 import rocha.guilherme.jose.view.SenhasSalvasPanel;
 
 public class SenhasSalvasController {
 
-	private SenhasSalvasPanel senhasSalvasPanel;
+	private final SenhasSalvasPanel senhasSalvasPanel;
 	private static SenhasSalvasHelper helper;
-	private EntityManager em;
+	private final EntityManager em;
 	
 	public SenhasSalvasController(SenhasSalvasPanel senhasSalvasPanel) {
 		this.senhasSalvasPanel = senhasSalvasPanel;
@@ -34,9 +35,10 @@ public class SenhasSalvasController {
 	private ModelSenhasSalvas getSenhaSelecionada(ModelUsuario usuario) {
 		int linha = getLinhaSelecionada();
 		String senhaTabela = senhasSalvasPanel.getTableSenhas().getValueAt(linha, 0).toString();
+		String senhaCriptografada = Criptografar.criptografar(senhaTabela);
 		
 		for(ModelSenhasSalvas senha: usuario.getSenhasSalvas()) {
-			if(senhaTabela.equals(senha.getSenha())) {
+			if(senhaCriptografada.equals(senha.getSenha())) {
 				return senha;
 			}
 		}
@@ -50,6 +52,8 @@ public class SenhasSalvasController {
 	}
 
 	public void excluirSenha(ModelUsuario usuario) {
+		em.getTransaction().begin();
+		
 		UsuarioDAO usuarioDAO = new UsuarioDAO(em);
 		SenhasSalvasDAO senhasSalvasDAO = new SenhasSalvasDAO(em);
 		
@@ -58,13 +62,18 @@ public class SenhasSalvasController {
 					JOptionPane.YES_OPTION) {
 				ModelSenhasSalvas senha = getSenhaSelecionada(usuario);
 				usuario.excluirSenha(senha);
-				senhasSalvasDAO.delete(senha);
-				usuarioDAO.update(usuario);
+				
+				ModelSenhasSalvas senhaExiste = em.find(ModelSenhasSalvas.class, senha.getId());
+				senhasSalvasDAO.delete(senhaExiste);
+				
+				usuarioDAO.insertOrUpdate(usuario);
 				preencherTabela(usuario);
 			}
 		}else{
 			senhasSalvasPanel.exibeMensagemInformativa("Selecione a linha com a senha que deseja excluir");
 		}
+		
+		em.getTransaction().commit();
 	}
 
 	public void editarDescricao(ModelUsuario usuario) {
@@ -87,7 +96,8 @@ public class SenhasSalvasController {
 
 	public void copiarSenha(ModelUsuario usuario) {
 		ModelSenhasSalvas senha = getSenhaSelecionada(usuario);
-		StringSelection selecao = new StringSelection(senha.getSenha());
+		String senhaDescriptografada = Criptografar.descriptografar(senha.getSenha());
+		StringSelection selecao = new StringSelection(senhaDescriptografada);
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selecao, null);
 		
 		int linha = getLinhaSelecionada();
