@@ -13,9 +13,9 @@ import rocha.guilherme.jose.view.SalvarSenhaView;
 
 public class GerarSenhaController {
 
-	private GerarSenhaPanel gerarSenhaPanel;
-	private GerarSenhaHelper helper;
-	private EntityManager em;
+	private final GerarSenhaPanel gerarSenhaPanel;
+	private final GerarSenhaHelper helper;
+	private final EntityManager em;
 	
 	public GerarSenhaController(GerarSenhaPanel gerarSenhaPanel) {
 		this.gerarSenhaPanel = gerarSenhaPanel;
@@ -25,7 +25,7 @@ public class GerarSenhaController {
 
 	public void gerarSenha() {
 		ModelGerarSenha senha = helper.obterModelo();
-		SenhasSalvasDAO senhasSalvas = new SenhasSalvasDAO(em);
+		SenhasSalvasDAO senhasSalvasDAO = new SenhasSalvasDAO(em);
 		
 		if(helper.validarQuantLetras()) {
 			if(helper.validarQuantNumeros()) {
@@ -34,7 +34,7 @@ public class GerarSenhaController {
 						if(helper.validarTamanhoDaSenha(senha)) {
 							senha.gerarSenha();
 							
-							while(senhasSalvas.senhaExiste(senha) != null) {
+							while(senhasSalvasDAO.senhaExiste(senha) != null) {
 								senha.gerarSenha();
 							}
 							
@@ -85,6 +85,5 @@ public class GerarSenhaController {
 		ModelSenhasSalvas senhaNova = new ModelSenhasSalvas(helper.getSenhaGerada(), "");
 		return senhaNova;
 	}
-	
 	
 }
