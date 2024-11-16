@@ -8,6 +8,7 @@ import javax.swing.Timer;
 import rocha.guilherme.jose.model.ModelSenhasSalvas;
 import rocha.guilherme.jose.model.ModelUsuario;
 import rocha.guilherme.jose.model.SenhaTableModel;
+import rocha.guilherme.jose.servico.Criptografar;
 import rocha.guilherme.jose.view.SenhasSalvasPanel;
 
 public class SenhasSalvasHelper {
@@ -24,7 +25,8 @@ public class SenhasSalvasHelper {
 	    tableModel.setNumRows(0);
 	    
 	    for (ModelSenhasSalvas senha : usuario.getSenhasSalvas()) {
-	        tableModel.addRow(senha);
+	    	ModelSenhasSalvas senhaConvertida = new ModelSenhasSalvas(Criptografar.descriptografar(senha.getSenha()), senha.getDescricao());
+	        tableModel.addRow(senhaConvertida);
 	    }
 	}
 
