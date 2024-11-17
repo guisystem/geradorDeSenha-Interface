@@ -17,7 +17,7 @@ public class LoginHelper {
 		String emailUsuario = loginView.getTextFieldUsuario().getText();
 		String senha = loginView.getPasswordFieldSenha().getText();
 		
-		ModelUsuario usuario = new ModelUsuario(nomeUsuario, senha, emailUsuario);
+		ModelUsuario usuario = new ModelUsuario(nomeUsuario, emailUsuario, senha);
 		
 		return usuario;
 	}

@@ -10,6 +10,7 @@ import javax.persistence.Query;
 import rocha.guilherme.jose.model.ModelGerarSenha;
 import rocha.guilherme.jose.model.ModelSenhasSalvas;
 import rocha.guilherme.jose.model.ModelUsuario;
+import rocha.guilherme.jose.servico.Criptografar;
 
 public class SenhasSalvasDAO {
 
@@ -54,7 +55,7 @@ public class SenhasSalvasDAO {
 	public ModelSenhasSalvas senhaExiste(ModelGerarSenha senha){
         String jpql = "SELECT u FROM senhassalvas as u WHERE u.senha = :pSenha";
         Query query = em.createQuery(jpql);
-        query.setParameter("pSenha", senha.getSenhaGerada());
+        query.setParameter("pSenha", Criptografar.criptografar(senha.getSenhaGerada()));
         
         return consulta(query).isEmpty() ? null : consulta(query).get(0);
     }

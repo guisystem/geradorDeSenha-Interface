@@ -8,6 +8,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import rocha.guilherme.jose.model.ModelUsuario;
+import rocha.guilherme.jose.servico.Criptografar;
 
 public class UsuarioDAO {
 
@@ -53,7 +54,7 @@ public class UsuarioDAO {
     	
     	query.setParameter("pUsuario", usuario.getNomeUsuario());
     	query.setParameter("pEmail", usuario.getEmailUsuario());
-    	query.setParameter("pSenha", usuario.getSenhaUsuario());
+    	query.setParameter("pSenha", Criptografar.criptografar(usuario.getSenhaUsuario()));
     	
     	return consulta(query).isEmpty() ? null : consulta(query).get(0);
     }
