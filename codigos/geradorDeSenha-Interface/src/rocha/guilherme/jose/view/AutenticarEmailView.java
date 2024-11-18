@@ -192,6 +192,7 @@ public class AutenticarEmailView extends JFrame {
 		btnSair.setFont(new Font("Arial", Font.PLAIN, 20));
 		btnSair.setBounds(229, 288, 86, 40);
 		contentPane.add(btnSair);
+		
 	}
 	
 	private void efeitoMouseOver(JButtonPersonalizado botao) {

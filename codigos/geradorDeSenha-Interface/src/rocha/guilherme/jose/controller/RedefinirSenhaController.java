@@ -1,6 +1,7 @@
 package rocha.guilherme.jose.controller;
 
 import javax.persistence.EntityManager;
+import javax.swing.SwingUtilities;
 
 import rocha.guilherme.jose.controller.helper.RedefinirSenhaHelper;
 import rocha.guilherme.jose.model.ModelUsuario;
@@ -30,7 +31,20 @@ public class RedefinirSenhaController {
 			if(helper.validarEmail()) {
 				if(buscarUsuario() != null) {
 					codigoGerado = Email.gerarOTP();
-					Email.enviarEmail(email, codigoGerado);
+					
+					Thread threadEnvio = new Thread(() -> {
+			            try {
+			                Email.enviarEmail(email, codigoGerado);
+			            } catch (Exception e) {
+			                e.printStackTrace();
+			                SwingUtilities.invokeLater(() -> {
+			                	redefinirSenhaView.exibeMensagemInformativa("Erro ao enviar e-mail!");
+			                });
+			            }
+			        });
+			    
+					threadEnvio.start();
+
 				}else {
 					redefinirSenhaView.exibeMensagemInformativa("Esse email não está associado a nenhuma conta cadastrada!");
 				}

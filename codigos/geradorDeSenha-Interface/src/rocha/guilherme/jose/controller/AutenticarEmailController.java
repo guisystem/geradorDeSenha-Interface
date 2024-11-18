@@ -1,6 +1,7 @@
 package rocha.guilherme.jose.controller;
 
 import javax.persistence.EntityManager;
+import javax.swing.SwingUtilities;
 
 import rocha.guilherme.jose.controller.helper.AutenticarEmailHelper;
 import rocha.guilherme.jose.model.ModelUsuario;
@@ -29,7 +30,18 @@ public class AutenticarEmailController {
 		String email = helper.obterEmail();
         codigoGerado = Email.gerarOTP();
 
-        Email.enviarEmail(email, codigoGerado);
+        Thread threadEnvio = new Thread(() -> {
+            try {
+                Email.enviarEmail(email, codigoGerado);
+            } catch (Exception e) {
+                e.printStackTrace();
+               SwingUtilities.invokeLater(() -> {
+            	   autenticarEmailView.exibeMensagemInformativa("Erro ao enviar e-mail!");
+                });
+            }
+        });
+
+        threadEnvio.start();
 	}
 
 	public Boolean validarCodigo() {
