@@ -11,6 +11,7 @@ import rocha.guilherme.jose.servico.Email;
 import rocha.guilherme.jose.servico.JPAConnection;
 import rocha.guilherme.jose.view.AutenticarEmailView;
 import rocha.guilherme.jose.view.CadastroUsuarioView;
+import rocha.guilherme.jose.view.IconeCirculoRotativo;
 import rocha.guilherme.jose.view.SenhasView;
 
 public class AutenticarEmailController {
@@ -26,16 +27,18 @@ public class AutenticarEmailController {
 		this.em = new JPAConnection().getEntityManager();
 	}
 
-	public void enviarCodigo() {
+	public void enviarCodigo(IconeCirculoRotativo circulo) {
 		String email = helper.obterEmail();
         codigoGerado = Email.gerarOTP();
 
         Thread threadEnvio = new Thread(() -> {
             try {
                 Email.enviarEmail(email, codigoGerado);
+                circulo.setVisible(false);
             } catch (Exception e) {
                 e.printStackTrace();
                SwingUtilities.invokeLater(() -> {
+            	   circulo.setVisible(false);
             	   autenticarEmailView.exibeMensagemInformativa("Erro ao enviar e-mail!");
                 });
             }

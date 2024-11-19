@@ -25,6 +25,7 @@ public class RedefinirSenhaView extends JFrame {
 	private JButtonPersonalizado btnEnviarCodigo;
 	private JButtonPersonalizado btnRedefinir;
 	private JButtonPersonalizado btnSair;
+	private IconeCirculoRotativo circulo;
 	
 	private RedefinirSenhaController controller;
 	
@@ -111,7 +112,8 @@ public class RedefinirSenhaView extends JFrame {
 		btnEnviarCodigo = new JButtonPersonalizado(Color.decode("#1E3663"), Color.decode("#133E8C"), 10, 10);
 		btnEnviarCodigo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controller.enviarCodigo();
+				circulo.setVisible(true);
+				controller.enviarCodigo(circulo);
 			}
 		});
 		btnEnviarCodigo.addMouseListener(new MouseAdapter() {
@@ -173,6 +175,12 @@ public class RedefinirSenhaView extends JFrame {
 		btnSair.setFont(new Font("Arial", Font.PLAIN, 20));
 		btnSair.setBounds(224, 316, 86, 40);
 		contentPane.add(btnSair);
+		
+		circulo = new IconeCirculoRotativo();
+		circulo.setBounds(300, 110, 40, 40); 
+		circulo.setOpaque(false);
+		circulo.setVisible(false);
+		contentPane.add(circulo);
 	}
 	
 	private void efeitoMouseOver(JButtonPersonalizado botao) {

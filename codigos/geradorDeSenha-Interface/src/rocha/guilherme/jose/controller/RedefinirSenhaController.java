@@ -9,6 +9,7 @@ import rocha.guilherme.jose.model.dao.UsuarioDAO;
 import rocha.guilherme.jose.servico.Criptografar;
 import rocha.guilherme.jose.servico.Email;
 import rocha.guilherme.jose.servico.JPAConnection;
+import rocha.guilherme.jose.view.IconeCirculoRotativo;
 import rocha.guilherme.jose.view.RedefinirSenhaView;
 
 public class RedefinirSenhaController {
@@ -24,7 +25,7 @@ public class RedefinirSenhaController {
 		this.em = new JPAConnection().getEntityManager();
 	}
 	
-	public void enviarCodigo() {
+	public void enviarCodigo(IconeCirculoRotativo circulo) {
 		String email = helper.obterEmail();
 		
 		if(!email.isEmpty()) {
@@ -35,9 +36,11 @@ public class RedefinirSenhaController {
 					Thread threadEnvio = new Thread(() -> {
 			            try {
 			                Email.enviarEmail(email, codigoGerado);
+			                circulo.setVisible(false);
 			            } catch (Exception e) {
 			                e.printStackTrace();
 			                SwingUtilities.invokeLater(() -> {
+			                	circulo.setVisible(false);
 			                	redefinirSenhaView.exibeMensagemInformativa("Erro ao enviar e-mail!");
 			                });
 			            }

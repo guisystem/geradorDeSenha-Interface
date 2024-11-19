@@ -29,6 +29,7 @@ public class AutenticarEmailView extends JFrame {
 	private JTextFieldPersonalizado textFieldCodigoRecebido;
 	private JButtonPersonalizado btnSeCadastrar;
 	private JButtonPersonalizado btnSair;
+	private IconeCirculoRotativo circulo;
 	
 	private AutenticarEmailController controller;
 	private static ModelUsuario usuario;
@@ -130,7 +131,8 @@ public class AutenticarEmailView extends JFrame {
 		btnEnviarCodigo = new JButtonPersonalizado(Color.decode("#1E3663"), Color.decode("#133E8C"), 10, 10);
 		btnEnviarCodigo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controller.enviarCodigo();
+				circulo.setVisible(true);
+				controller.enviarCodigo(circulo);
 			}
 		});
 		btnEnviarCodigo.addMouseListener(new MouseAdapter() {
@@ -192,6 +194,12 @@ public class AutenticarEmailView extends JFrame {
 		btnSair.setFont(new Font("Arial", Font.PLAIN, 20));
 		btnSair.setBounds(229, 288, 86, 40);
 		contentPane.add(btnSair);
+		
+		circulo = new IconeCirculoRotativo();
+		circulo.setBounds(300, 110, 40, 40); 
+		circulo.setOpaque(false);
+		circulo.setVisible(false);
+		contentPane.add(circulo);
 		
 	}
 	
