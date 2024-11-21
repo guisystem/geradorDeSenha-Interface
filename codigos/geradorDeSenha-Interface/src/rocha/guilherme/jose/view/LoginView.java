@@ -19,7 +19,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import rocha.guilherme.jose.controller.LoginController;
-import rocha.guilherme.jose.model.dao.BancoDeDados;
 
 @SuppressWarnings("serial")
 public class LoginView extends JFrame {
@@ -182,9 +181,6 @@ public class LoginView extends JFrame {
 		passwordFieldSenha.setBounds(28, 186, 297, 52);
 		painelCadastro.add(passwordFieldSenha);
 		
-		if(BancoDeDados.usuarios == null){
-			BancoDeDados.inicia();
-		}
 	}
 	
 	private void efeitoMouseOver(JButton botao) {
